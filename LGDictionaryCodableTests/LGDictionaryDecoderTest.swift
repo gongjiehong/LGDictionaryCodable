@@ -40,11 +40,11 @@ class LGDictionaryDecoderTest: XCTestCase {
                 assert(decodedObject.title == "this is title", "decode failed")
                 assert(decodedObject.child.title == "this is title", "child decode failed")
                 
-//                let normalEncoder = LGDictionaryEncoder()
-//                normalEncoder.dateEncodingStrategy = .secondsSince1970
-//                let encodedObject = try normalEncoder.encode(decodedObject)
+                let normalEncoder = LGDictionaryEncoder()
+                normalEncoder.dateEncodingStrategy = .secondsSince1970
+                let encodedObject = try normalEncoder.encode(decodedObject)
                 
-//                dump(encodedObject)
+                dump(encodedObject)
                 
             } catch {
                 dump(error)
@@ -54,6 +54,14 @@ class LGDictionaryDecoderTest: XCTestCase {
         } while counter >= 0
     }
 
+    
+    func testTableBind() {
+        let values = ColumnTypeDecoder.types(of: LGDictionaryDecoderExampleModel.self)
+        for (key, value) in values {
+            print(key, value.description)
+        }
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
@@ -67,6 +75,9 @@ struct LGDictionaryDecoderExampleModel : Codable {
     var title: String
     var description: String
     var date: Date
+    
+    var floatValue: Float
+    var doubleValue: Double
     
     var child: LGDictionaryDecoderExampleChildModel
 }
