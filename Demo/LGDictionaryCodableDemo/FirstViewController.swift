@@ -35,6 +35,10 @@ class FirstViewController: UIViewController {
                                                     doubleValue: 3.1415926535897932384626,
                                                     child: childModel)
         dbManager.insert(value: model, clearOld: true)
+        
+        
+        let newDBManager = LGDBManager(dbName: "test", directory: LGDBManager.Directory.documents)
+        
     }
 
 

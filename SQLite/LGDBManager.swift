@@ -36,7 +36,7 @@ open class LGDBManager {
         
         pathURL.appendPathComponent("LGDBManager", isDirectory: true)
         FileManager.createDirectory(withURL: pathURL)
-        pathURL.appendPathComponent("dbName.db", isDirectory: false)
+        pathURL.appendPathComponent("\(dbName).db", isDirectory: false)
         
         if FileManager.default.fileExists(atPath: pathURL.path) {
         } else {
@@ -98,8 +98,8 @@ open class LGDBManager {
     }
     
     public func insert<T>(value: T,
-                       clearOld: Bool = false,
-                       completeCallback: ((Bool) -> Void)? = nil) where T : Encodable
+                          clearOld: Bool = false,
+                          completeCallback: ((Bool) -> Void)? = nil) where T : Encodable
     {
         let encoder = LGDictionaryEncoder()
         do {
@@ -120,7 +120,7 @@ open class LGDBManager {
                 
                 keySql.removeLast()
                 keySql += ")"
-
+                
                 valueSql.removeLast()
                 valueSql += ")"
             }
