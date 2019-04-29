@@ -55,6 +55,9 @@ open class LGDictionaryDecoder {
         /// Decode the `Data` from a Base64-encoded string. This is the default strategy.
         case base64
         
+        /// Encoded the data object to Decodable object or array.
+        case dataToCodable
+        
         /// Decode the `Data` as a custom value decoded by the given closure.
         case custom((_ decoder: Decoder) throws -> Data)
     }
@@ -166,7 +169,7 @@ fileprivate class __LGDictionaryDecoder : Swift.Decoder {
                                               reality: self.storage.topContainer)
         }
         
-        let container = DictionaryKeyedDecodingContainer<Key>(referencing: self, wrapping: topContainer)
+        let container = _DictionaryKeyedDecodingContainer<Key>(referencing: self, wrapping: topContainer)
         return KeyedDecodingContainer(container)
     }
     
@@ -218,7 +221,7 @@ fileprivate struct DictionaryDecodingStorage {
 }
 
 // MARK: Decoding Containers
-fileprivate struct DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecodingContainerProtocol {
+fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecodingContainerProtocol {
     typealias Key = K
     
     // MARK: Properties
@@ -554,7 +557,7 @@ fileprivate struct DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecodi
     }
     
     public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
-        guard let entry = self.container[key.stringValue] else {
+        guard var entry = self.container[key.stringValue] else {
             let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
             let context = DecodingError.Context(codingPath: self.decoder.codingPath,
                                                 debugDescription: debugDescription)
@@ -563,6 +566,19 @@ fileprivate struct DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecodi
         
         self.decoder.codingPath.append(key)
         defer { self.decoder.codingPath.removeLast() }
+        
+        
+        if let data = (entry as? Data) {
+            switch self.decoder.options.dataDecodingStrategy {
+            case .dataToCodable:
+                if let tempEntry = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
+                    entry = tempEntry
+                }
+                break
+            default:
+                break
+            }
+        }
         
         guard let value = try self.decoder.unbox(entry, as: T.self) else {
             let debugDescription = "Expected \(type) value but found null instead."
@@ -592,7 +608,7 @@ fileprivate struct DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecodi
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: [String : Any].self, reality: value)
         }
         
-        let container = DictionaryKeyedDecodingContainer<NestedKey>(referencing: self.decoder, wrapping: dictionary)
+        let container = _DictionaryKeyedDecodingContainer<NestedKey>(referencing: self.decoder, wrapping: dictionary)
         return KeyedDecodingContainer(container)
     }
     
@@ -1033,7 +1049,7 @@ fileprivate struct _DictionaryUnkeyedDecodingContainer : UnkeyedDecodingContaine
         }
         
         self.currentIndex += 1
-        let container = DictionaryKeyedDecodingContainer<NestedKey>(referencing: self.decoder, wrapping: dictionary)
+        let container = _DictionaryKeyedDecodingContainer<NestedKey>(referencing: self.decoder, wrapping: dictionary)
         return KeyedDecodingContainer(container)
     }
     
@@ -1418,7 +1434,7 @@ fileprivate extension __LGDictionaryDecoder {
         guard !(value is NSNull) else { return nil }
         
         switch self.options.dataDecodingStrategy {
-        case .raw:
+        case .raw, .dataToCodable:
             return value as? Data
         case .deferredToData:
             self.storage.push(container: value)
@@ -1441,6 +1457,7 @@ fileprivate extension __LGDictionaryDecoder {
             defer { self.storage.popContainer() }
             return try closure(self)
         }
+        
     }
     
     func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {

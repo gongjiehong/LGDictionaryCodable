@@ -14,11 +14,7 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let dbManager = LGDBManager(dbName: "test", directory: LGDBManager.Directory.documents)
-        dbManager.createTable(from: LGDictionaryDecoderExampleModel.self,
-                              propertys: [ColumnProperty(name: "title",
-                                                         defaultValue: "",
-                                                         isUnique: false,
-                                                         isPrimary: true)])
+        dbManager.createTable(from: LGDictionaryDecoderExampleModel.self)
         { (succeed) in
                                                             
         }
@@ -28,16 +24,66 @@ class FirstViewController: UIViewController {
                                                               floatValue: 3.1415926,
                                                               doubleValue: 3.1415926535897932384626,
                                                               date: Date())
-        let model = LGDictionaryDecoderExampleModel(title: "title",
+        let model1 = LGDictionaryDecoderExampleModel(user_id: "1",
+                                                    title: "title",
                                                     description: "description",
                                                     date: Date(),
                                                     floatValue: 3.1415927,
                                                     doubleValue: 3.1415926535897932384626,
-                                                    child: childModel)
-        dbManager.insert(value: model, clearOld: true)
+                                                    child: [childModel, childModel, childModel])
+        let model2 = LGDictionaryDecoderExampleModel(user_id: "2",
+                                                     title: "title",
+                                                     description: "description",
+                                                     date: Date(),
+                                                     floatValue: 3.1415927,
+                                                     doubleValue: 3.1415926535897932384626,
+                                                     child: [childModel, childModel, childModel])
+        let model3 = LGDictionaryDecoderExampleModel(user_id: "3",
+                                                     title: "title",
+                                                     description: "description",
+                                                     date: Date(),
+                                                     floatValue: 3.1415927,
+                                                     doubleValue: 3.1415926535897932384626,
+                                                     child: [childModel, childModel, childModel])
+        let model4 = LGDictionaryDecoderExampleModel(user_id: "4",
+                                                     title: "title",
+                                                     description: "description",
+                                                     date: Date(),
+                                                     floatValue: 3.1415927,
+                                                     doubleValue: 3.1415926535897932384626,
+                                                     child: [childModel, childModel, childModel])
+        let model5 = LGDictionaryDecoderExampleModel(user_id: "5",
+                                                     title: "title",
+                                                     description: "description",
+                                                     date: Date(),
+                                                     floatValue: 3.1415927,
+                                                     doubleValue: 3.1415926535897932384626,
+                                                     child: [childModel, childModel, childModel])
+        let model6 = LGDictionaryDecoderExampleModel(user_id: "6",
+                                                     title: "title",
+                                                     description: "description",
+                                                     date: Date(),
+                                                     floatValue: 3.1415927,
+                                                     doubleValue: 3.1415926535897932384626,
+                                                     child: [childModel, childModel, childModel])
+        dbManager.insert(values: [model1, model2, model3, model4, model5, model6])
         
+        dbManager.update(to: LGDictionaryDecoderExampleModel.self,
+                         values: [ColumnCondition(name: "user_id",
+                                                  value: "7")],
+                         wheres: ColumnCondition(name: "user_id",
+                                                 value: "6"))
+        { (succeed) in
+                                                    
+        }
         
-        let newDBManager = LGDBManager(dbName: "test", directory: LGDBManager.Directory.documents)
+        dbManager.select(from: LGDictionaryDecoderExampleModel.self,
+                         orderBy: ColumnSortType.desc(name: "user_id"))
+        { (resultArray) in
+            
+        }
+
+//        let newDBManager = LGDBManager(dbName: "test", directory: LGDBManager.Directory.documents)
         
     }
 
@@ -46,6 +92,7 @@ class FirstViewController: UIViewController {
 
 
 struct LGDictionaryDecoderExampleModel : Codable {
+    var user_id: String
     var title: String
     var description: String
     var date: Date
@@ -53,7 +100,7 @@ struct LGDictionaryDecoderExampleModel : Codable {
     var floatValue: Float
     var doubleValue: Double
     
-    var child: LGDictionaryDecoderExampleChildModel
+    var child: [LGDictionaryDecoderExampleChildModel]
 }
 
 struct LGDictionaryDecoderExampleChildModel : Codable {

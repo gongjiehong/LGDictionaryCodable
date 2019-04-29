@@ -50,11 +50,14 @@ open class LGDictionaryEncoder {
     
     /// The strategy to use for encoding `Data` values.
     public enum DataEncodingStrategy {
-        /// Raw data, no processing
+        /// Raw data, no processing. This is the default strategy.
         case raw
         
-        /// Encoded the `Data` as a Base64-encoded string. This is the default strategy.
+        /// Encoded the `Data` as a Base64-encoded string.
         case base64
+        
+        /// Encoded the child Encodable object or array to data.
+        case codableToData
     }
     
     /// The strategy to use for non-Dictionary-conforming floating-point values (IEEE 754 infinity and NaN).
@@ -398,7 +401,13 @@ fileprivate final class _EncodingKeyedContainer<K: CodingKey>: KeyedEncodingCont
                 codingPath.removeLast()
             }
             let result = try __LGDictionaryEncoder(options: self.options, codingPath: codingPath).encodeToAny(value)
-            storage[key.stringValue] = .value(result)
+            if options.dataEncodingStrategy == .codableToData {
+                let data = try JSONSerialization.data(withJSONObject: result,
+                                                      options: JSONSerialization.WritingOptions.prettyPrinted)
+                storage[key.stringValue] = .value(data)
+            } else {
+                storage[key.stringValue] = .value(result)
+            }
         }
     }
     
@@ -730,20 +739,16 @@ extension __LGDictionaryEncoder {
             // Dates encode as single-value objects; this can't both throw and push a container, so no need to catch the error.
             try date.encode(to: self)
             return date
-            
         case .secondsSince1970:
             return date.timeIntervalSince1970
-            
         case .millisecondsSince1970:
             return 1000.0 * date.timeIntervalSince1970
-            
         case .iso8601:
             if #available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *) {
                 return iso8601Formatter.string(from: date)
             } else {
                 fatalError("ISO8601DateFormatter is unavailable on this platform.")
             }
-            
         case .formatted(let formatter):
             return formatter.string(from: date)
         }
@@ -751,7 +756,7 @@ extension __LGDictionaryEncoder {
     
     fileprivate func box(_ data: Data) throws -> Any {
         switch self.options.dataEncodingStrategy {
-        case .raw:
+        case .raw, .codableToData:
             return data
         case .base64:
             return data.base64EncodedData()

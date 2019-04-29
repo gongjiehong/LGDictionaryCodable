@@ -13,11 +13,15 @@ public struct ColumnProperty {
     public var name: String
     public var isPrimary: Bool
     public var isUnique: Bool
-    public var defaultValue: Any
+    public var value: Any
     
-    public init(name: String, defaultValue: Any, isUnique: Bool = false, isPrimary: Bool = false) {
+    public init(name: String,
+                value: Any,
+                isUnique: Bool = false,
+                isPrimary: Bool = false)
+    {
         self.name = name
-        self.defaultValue = defaultValue
+        self.value = value
         self.isUnique = isUnique
         self.isPrimary = isPrimary
     }
