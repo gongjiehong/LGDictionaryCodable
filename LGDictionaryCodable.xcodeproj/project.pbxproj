@@ -34,6 +34,7 @@
 		FEE59E66227559750028FA6F /* LGDictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */; };
 		FEE59E7022769FF30028FA6F /* ColumnSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */; };
 		FEE59E712276A0C90028FA6F /* ColumnSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */; };
+		FEF09D7E227EDCE700E480B5 /* Codable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		FEB32BB32271AA940054D737 /* LGDictionaryDecoderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryDecoderTest.swift; sourceTree = "<group>"; };
 		FEB32BB52271AE690054D737 /* LGDictionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryEncoder.swift; sourceTree = "<group>"; };
 		FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSortType.swift; sourceTree = "<group>"; };
+		FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 				FEB32B98227196DB0054D737 /* LGDictionaryCodable.h */,
 				FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */,
 				FEB32BB52271AE690054D737 /* LGDictionaryEncoder.swift */,
+				FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */,
 				FEB32B99227196DB0054D737 /* Info.plist */,
 			);
 			path = LGDictionaryCodable;
@@ -383,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEF09D7E227EDCE700E480B5 /* Codable+Extension.swift in Sources */,
 				FEB32BB2227197E40054D737 /* LGDictionaryDecoder.swift in Sources */,
 				FE9401672276A91400F5D611 /* ColumnCondition.swift in Sources */,
 				FE0599732272F25F006F07F2 /* ColumnTypeDecoder.swift in Sources */,
@@ -568,6 +572,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_BUNDLE_IDENTIFIER = cxylg.framework.LGDictionaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -596,6 +601,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_BUNDLE_IDENTIFIER = cxylg.framework.LGDictionaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

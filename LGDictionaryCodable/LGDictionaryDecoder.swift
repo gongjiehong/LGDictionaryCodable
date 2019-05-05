@@ -119,12 +119,7 @@ open class LGDictionaryDecoder {
     open func decode<T : Decodable>(_ type: T.Type, from dictionary: Any) throws -> T {
         let topLevel = dictionary
         let decoder = __LGDictionaryDecoder(referencing: topLevel, options: self.options)
-        guard let value = try decoder.unbox(topLevel, as: T.self) else {
-            let context = DecodingError.Context(codingPath: [],
-                                                debugDescription: "The given data did not contain a top-level value.")
-            throw DecodingError.valueNotFound(T.self, context)
-        }
-        
+        let value = try T.init(from: decoder)
         return value
     }
 }
