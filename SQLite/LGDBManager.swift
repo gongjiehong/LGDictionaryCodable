@@ -13,7 +13,7 @@ open class LGDBManager {
     static var queueDictionary = LGWeakValueDictionary<URL, FMDatabaseQueue>()
     
     private let workQueue = DispatchQueue(label: "cxylg.framework.LGDictionaryCodable.LGDBManager.workQuque",
-                                          qos: DispatchQoS.background)
+                                          qos: DispatchQoS.userInteractive)
     
     public enum Directory {
         case documents
@@ -133,6 +133,8 @@ open class LGDBManager {
         
         workQueue.async {
             let encoder = LGDictionaryEncoder()
+            encoder.dataEncodingStrategy = .codableToData
+            encoder.dateEncodingStrategy = .secondsSince1970
             do {
                 let valueToInsert = try encoder.encode(value)
                 
