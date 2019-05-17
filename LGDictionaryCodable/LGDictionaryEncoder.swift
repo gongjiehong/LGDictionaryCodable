@@ -401,7 +401,7 @@ fileprivate final class _EncodingKeyedContainer<K: CodingKey>: KeyedEncodingCont
                 codingPath.removeLast()
             }
             let result = try __LGDictionaryEncoder(options: self.options, codingPath: codingPath).encodeToAny(value)
-            if options.dataEncodingStrategy == .codableToData {
+            if options.dataEncodingStrategy == .codableToData, (result is [String: Any] || result is [Any]) {
                 let data = try JSONSerialization.data(withJSONObject: result,
                                                       options: JSONSerialization.WritingOptions.prettyPrinted)
                 storage[key.stringValue] = .value(data)

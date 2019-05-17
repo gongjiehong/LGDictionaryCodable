@@ -54,7 +54,7 @@ open class LGDBManager {
     }
     
     private func getTableName(from type: Codable.Type) -> String {
-        return "\(type)Table"
+        return String(describing: type) + "Table"
     }
     
     public func tableExists<T>(_ type: T.Type) -> Bool where T : Codable {
@@ -140,7 +140,7 @@ open class LGDBManager {
                 
                 let tableName = self.getTableName(from: T.self)
                 
-                var sql: String = "INSERT OR REPLACE INTO \(tableName) %@ VALUES %@ ;"
+                var sql: String = "INSERT OR REPLACE INTO \(tableName) %@ VALUES %@;"
                 var keySql: String = "("
                 var valueSql: String = "("
                 
