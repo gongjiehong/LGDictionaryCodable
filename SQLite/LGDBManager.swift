@@ -54,7 +54,8 @@ open class LGDBManager {
     }
     
     private func getTableName(from type: Codable.Type) -> String {
-        return String(describing: type) + "Table"
+//        let tempValue = Optional<Codable.Type>(type).unsafelyUnwrapped
+        return String(reflecting: type).replacingOccurrences(of: ".", with: "") + "Table"
     }
     
     public func tableExists<T>(_ type: T.Type) -> Bool where T : Codable {
@@ -131,7 +132,12 @@ open class LGDBManager {
             }
         }
         
+        if clearOld {
+            self.delete(from: T.self)
+        }
+        
         workQueue.async {
+            
             let encoder = LGDictionaryEncoder()
             encoder.dataEncodingStrategy = .codableToData
             encoder.dateEncodingStrategy = .secondsSince1970
@@ -185,10 +191,15 @@ open class LGDBManager {
             }
         }
         
+        if clearOld {
+            self.delete(from: T.self)
+        }
+        
         workQueue.async {
             let encoder = LGDictionaryEncoder()
             encoder.dataEncodingStrategy = .codableToData
             encoder.dateEncodingStrategy = .secondsSince1970
+
             do {
                 
                 let valuesToInsert = try encoder.encode(values)
