@@ -343,6 +343,7 @@ open class LGDBManager {
                         let decoder = LGDictionaryDecoder()
                         decoder.dataDecodingStrategy = .dataToCodable
                         decoder.dateDecodingStrategy = .secondsSince1970
+                        decoder.nonContainsKeyDecodingStrategy = .default
                         do {
                             let resultArray = try decoder.decode([T].self, from: resultDictionaryArray)
                             callbackOnMainQueue(resultArray)

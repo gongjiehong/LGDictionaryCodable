@@ -74,6 +74,18 @@ open class LGDictionaryDecoder {
         case convertFromString(positiveInfinity: String, negativeInfinity: String, nan: String)
     }
     
+    /// The strategy to use for not contain key value
+    ///
+    /// - `throw`: Throw error not contain.
+    /// - `default`: Use default value instead.
+    public enum NonContainsKeyDecodingStrategy {
+        /// Throw error not contain.
+        case `throw`
+        
+        /// Use default value instead.
+        case `default`
+    }
+    
     /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
     open var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     
@@ -83,6 +95,8 @@ open class LGDictionaryDecoder {
     /// The strategy to use in decoding non-conforming numbers. Defaults to `.throw`.
     open var nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
     
+    open var nonContainsKeyDecodingStrategy: NonContainsKeyDecodingStrategy = .throw
+    
     /// Contextual user-provided information for use during decoding.
     open var userInfo: [CodingUserInfoKey : Any] = [:]
     
@@ -91,6 +105,7 @@ open class LGDictionaryDecoder {
         let dateDecodingStrategy: DateDecodingStrategy
         let dataDecodingStrategy: DataDecodingStrategy
         let nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy
+        let nonContainsKeyDecodingStrategy: NonContainsKeyDecodingStrategy
         let userInfo: [CodingUserInfoKey : Any]
     }
     
@@ -99,6 +114,7 @@ open class LGDictionaryDecoder {
         return _Options(dateDecodingStrategy: dateDecodingStrategy,
                         dataDecodingStrategy: dataDecodingStrategy,
                         nonConformingFloatDecodingStrategy: nonConformingFloatDecodingStrategy,
+                        nonContainsKeyDecodingStrategy: nonContainsKeyDecodingStrategy,
                         userInfo: userInfo)
     }
     
@@ -247,342 +263,487 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
     }
     
     public func decodeNil(forKey key: Key) throws -> Bool {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        return entry is NSNull
-    }
-    
-    func decode(_ type: Bool.Type, forKey key: Key) throws -> Bool {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Bool.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Int.Type, forKey key: Key) throws -> Int {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Int.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Int8.Type, forKey key: Key) throws -> Int8 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Int8.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Int16.Type, forKey key: Key) throws -> Int16 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Int16.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Int32.Type, forKey key: Key) throws -> Int32 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Int32.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Int64.Type, forKey key: Key) throws -> Int64 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Int64.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: UInt.Type, forKey key: Key) throws -> UInt {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: UInt.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: UInt8.Type, forKey key: Key) throws -> UInt8 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: UInt8.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: UInt16.Type, forKey key: Key) throws -> UInt16 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: UInt16.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: UInt32.Type, forKey key: Key) throws -> UInt32 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: UInt32.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: UInt64.Type, forKey key: Key) throws -> UInt64 {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: UInt64.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Float.Type, forKey key: Key) throws -> Float {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Float.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: Double.Type, forKey key: Key) throws -> Double {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: Double.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    func decode(_ type: String.Type, forKey key: Key) throws -> String {
-        guard let entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        guard let value = try self.decoder.unbox(entry, as: String.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
-        }
-        
-        return value
-    }
-    
-    public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
-        guard var entry = self.container[key.stringValue] else {
-            let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.keyNotFound(key, context)
-        }
-        
-        self.decoder.codingPath.append(key)
-        defer { self.decoder.codingPath.removeLast() }
-        
-        
-        if let data = (entry as? Data) {
-            switch self.decoder.options.dataDecodingStrategy {
-            case .dataToCodable:
-                if let tempEntry = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
-                    entry = tempEntry
-                }
+        if let entry = self.container[key.stringValue] {
+           return entry is NSNull
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                return true
                 break
-            default:
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
                 break
             }
         }
-        
-        guard let value = try self.decoder.unbox(entry, as: T.self) else {
-            let debugDescription = "Expected \(type) value but found null instead."
-            let context = DecodingError.Context(codingPath: self.decoder.codingPath,
-                                                debugDescription: debugDescription)
-            throw DecodingError.valueNotFound(type, context)
+    }
+    
+    func decode(_ type: Bool.Type, forKey key: Key) throws -> Bool {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Bool.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  Bool.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
         }
         
-        return value
+    }
+    
+    func decode(_ type: Int.Type, forKey key: Key) throws -> Int {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Int.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: Int8.Type, forKey key: Key) throws -> Int8 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Int8.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+        
+       
+    }
+    
+    func decode(_ type: Int16.Type, forKey key: Key) throws -> Int16 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Int16.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: Int32.Type, forKey key: Key) throws -> Int32 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Int32.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: Int64.Type, forKey key: Key) throws -> Int64 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Int64.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: UInt.Type, forKey key: Key) throws -> UInt {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: UInt.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: UInt8.Type, forKey key: Key) throws -> UInt8 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: UInt8.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: UInt16.Type, forKey key: Key) throws -> UInt16 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: UInt16.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: UInt32.Type, forKey key: Key) throws -> UInt32 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: UInt32.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: UInt64.Type, forKey key: Key) throws -> UInt64 {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: UInt64.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: Float.Type, forKey key: Key) throws -> Float {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Float.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: Double.Type, forKey key: Key) throws -> Double {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: Double.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    func decode(_ type: String.Type, forKey key: Key) throws -> String {
+        if let entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            guard let value = try self.decoder.unbox(entry, as: String.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
+    }
+    
+    public func decode<T : Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
+        if var entry = self.container[key.stringValue] {
+            self.decoder.codingPath.append(key)
+            defer { self.decoder.codingPath.removeLast() }
+            
+            
+            if let data = (entry as? Data) {
+                switch self.decoder.options.dataDecodingStrategy {
+                case .dataToCodable:
+                    if let tempEntry = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
+                        entry = tempEntry
+                    }
+                    break
+                default:
+                    break
+                }
+            }
+            
+            guard let value = try self.decoder.unbox(entry, as: T.self) else {
+                let debugDescription = "Expected \(type) value but found null instead."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.valueNotFound(type, context)
+            }
+            
+            return value
+        } else {
+            switch decoder.options.nonContainsKeyDecodingStrategy {
+            case .default:
+                if let value =  type.defaultValue  {
+                    return value
+                } else {
+                    fallthrough
+                }
+            case .throw:
+                let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
+                let context = DecodingError.Context(codingPath: self.decoder.codingPath,
+                                                    debugDescription: debugDescription)
+                throw DecodingError.keyNotFound(key, context)
+            }
+        }
     }
     
     public func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type,

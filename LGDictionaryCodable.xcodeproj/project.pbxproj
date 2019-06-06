@@ -31,6 +31,8 @@
 		FEB32BA6227196DB0054D737 /* LGDictionaryCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB32B98227196DB0054D737 /* LGDictionaryCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB32BB2227197E40054D737 /* LGDictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */; };
 		FEB32BB42271AA940054D737 /* LGDictionaryDecoderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB32BB32271AA940054D737 /* LGDictionaryDecoderTest.swift */; };
+		FEE3B42022A7DD650067E816 /* LGDecodableDefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE3B41F22A7DD650067E816 /* LGDecodableDefaultValue.swift */; };
+		FEE3B42822A7E09F0067E816 /* LGDecodableDefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE3B41F22A7DD650067E816 /* LGDecodableDefaultValue.swift */; };
 		FEE59E66227559750028FA6F /* LGDictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */; };
 		FEE59E7022769FF30028FA6F /* ColumnSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */; };
 		FEE59E712276A0C90028FA6F /* ColumnSortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */; };
@@ -115,6 +117,7 @@
 		FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryDecoder.swift; sourceTree = "<group>"; };
 		FEB32BB32271AA940054D737 /* LGDictionaryDecoderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryDecoderTest.swift; sourceTree = "<group>"; };
 		FEB32BB52271AE690054D737 /* LGDictionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryEncoder.swift; sourceTree = "<group>"; };
+		FEE3B41F22A7DD650067E816 /* LGDecodableDefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDecodableDefaultValue.swift; sourceTree = "<group>"; };
 		FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSortType.swift; sourceTree = "<group>"; };
 		FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +207,7 @@
 				FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */,
 				FEB32BB52271AE690054D737 /* LGDictionaryEncoder.swift */,
 				FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */,
+				FEE3B41F22A7DD650067E816 /* LGDecodableDefaultValue.swift */,
 				FEB32B99227196DB0054D737 /* Info.plist */,
 			);
 			path = LGDictionaryCodable;
@@ -390,6 +394,7 @@
 				FEB32BB2227197E40054D737 /* LGDictionaryDecoder.swift in Sources */,
 				FE9401672276A91400F5D611 /* ColumnCondition.swift in Sources */,
 				FE0599732272F25F006F07F2 /* ColumnTypeDecoder.swift in Sources */,
+				FEE3B42022A7DD650067E816 /* LGDecodableDefaultValue.swift in Sources */,
 				FE9401702276A93000F5D611 /* ColumnLimit.swift in Sources */,
 				FE0599782272FC03006F07F2 /* ColumnProperty.swift in Sources */,
 				FE0599212272A38C006F07F2 /* LGDictionaryEncoder.swift in Sources */,
@@ -415,6 +420,7 @@
 				FE0599752272F262006F07F2 /* ColumnCodable.swift in Sources */,
 				FEE59E712276A0C90028FA6F /* ColumnSortType.swift in Sources */,
 				FE059A1D22730D9D006F07F2 /* LGWeakValueDictionary.swift in Sources */,
+				FEE3B42822A7E09F0067E816 /* LGDecodableDefaultValue.swift in Sources */,
 				FE0599792272FC03006F07F2 /* ColumnProperty.swift in Sources */,
 				FE0599762272F265006F07F2 /* ColumnType.swift in Sources */,
 				FE9401722276A96F00F5D611 /* ColumnLimit.swift in Sources */,
