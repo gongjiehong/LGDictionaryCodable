@@ -53,13 +53,12 @@ open class LGDBManager {
         }
     }
     
-    private func getTableName(from type: Codable.Type) -> String {
-//        let tempValue = Optional<Codable.Type>(type).unsafelyUnwrapped
-        return String(reflecting: type).replacingOccurrences(of: ".", with: "") + "Table"
+    private func getTableName(from type: Codable.Type, tableSuffix: String = "") -> String {
+        return String(reflecting: type).replacingOccurrences(of: ".", with: "") + tableSuffix + "Table"
     }
     
-    public func tableExists<T>(_ type: T.Type) -> Bool where T : Codable {
-        let tableName = getTableName(from: type)
+    public func tableExists<T>(_ type: T.Type, tableSuffix: String = "") -> Bool where T : Codable {
+        let tableName = getTableName(from: type, tableSuffix: tableSuffix)
         var result: Bool = false
         self.databaseQueue.inDatabase { (database) in
             result = database.tableExists(tableName)
@@ -68,6 +67,7 @@ open class LGDBManager {
     }
     
     public func createTable<T>(from type: T.Type,
+                               tableSuffix: String = "",
                                isAsynchronous: Bool = true,
                                propertys: [ColumnProperty] = [],
                                completeCallback: ((Bool) -> Void)? = nil) where T : Codable
@@ -75,7 +75,7 @@ open class LGDBManager {
         func createTable() {
             let columns = ColumnTypeDecoder.types(of: type)
             
-            var createSQL: String = "CREATE TABLE IF NOT EXISTS \(getTableName(from: type)) ("
+            var createSQL: String = "CREATE TABLE IF NOT EXISTS \(getTableName(from: type, tableSuffix: tableSuffix)) ("
             
             for (key, value) in columns {
                 createSQL += (key + " ")
@@ -121,6 +121,7 @@ open class LGDBManager {
     }
     
     public func insert<T>(value: T,
+                          tableSuffix: String = "",
                           clearOld: Bool = false,
                           completeCallback: ((Bool) -> Void)? = nil) where T : Codable
     {
@@ -133,7 +134,7 @@ open class LGDBManager {
         }
         
         if clearOld {
-            self.delete(from: T.self)
+            self.delete(from: T.self, tableSuffix: tableSuffix)
         }
         
         workQueue.async {
@@ -144,7 +145,7 @@ open class LGDBManager {
             do {
                 let valueToInsert = try encoder.encode(value)
                 
-                let tableName = self.getTableName(from: T.self)
+                let tableName = self.getTableName(from: T.self, tableSuffix: tableSuffix)
                 
                 var sql: String = "INSERT OR REPLACE INTO \(tableName) %@ VALUES %@;"
                 var keySql: String = "("
@@ -180,6 +181,7 @@ open class LGDBManager {
     }
     
     public func insert<T>(values: [T],
+                          tableSuffix: String = "",
                           clearOld: Bool = false,
                           completeCallback: ((Bool) -> Void)? = nil) where T : Codable
     {
@@ -192,7 +194,7 @@ open class LGDBManager {
         }
         
         if clearOld {
-            self.delete(from: T.self)
+            self.delete(from: T.self, tableSuffix: tableSuffix)
         }
         
         workQueue.async {
@@ -210,7 +212,7 @@ open class LGDBManager {
                 
                 let keysArray = dic.keys
                 
-                let tableName = self.getTableName(from: T.self)
+                let tableName = self.getTableName(from: T.self, tableSuffix: tableSuffix)
                 var sql: String = "INSERT OR REPLACE INTO \(tableName) %@ VALUES %@;"
                 let keySql = "(\(keysArray.joined(separator: ", ")))"
                 
@@ -244,6 +246,7 @@ open class LGDBManager {
     }
     
     public func delete<T>(from type: T.Type,
+                          tableSuffix: String = "",
                           conditions: [ColumnCondition] = [],
                           completeCallback: ((Bool) -> Void)? = nil) where T : Codable
     {
@@ -256,7 +259,7 @@ open class LGDBManager {
         }
         
         workQueue.async {
-            let tableName = self.getTableName(from: type)
+            let tableName = self.getTableName(from: type, tableSuffix: tableSuffix)
             var sql = "DELETE FROM \(tableName) %@;"
             var conditionValueArray = [Any]()
             if conditions.count > 0 {
@@ -280,6 +283,7 @@ open class LGDBManager {
     }
     
     public func select<T>(from type: T.Type,
+                          tableSuffix: String = "",
                           conditions: [ColumnCondition] = [],
                           orderBy: ColumnSortType = .ignore,
                           limit: ColumnLimit = .unlimited,
@@ -292,7 +296,7 @@ open class LGDBManager {
         }
         
         workQueue.async {
-            let tableName = self.getTableName(from: type)
+            let tableName = self.getTableName(from: type, tableSuffix: tableSuffix)
             var sql = "SELECT * FROM \(tableName) %@ "
             
             var conditionValueArray = [Any]()
@@ -361,6 +365,7 @@ open class LGDBManager {
     }
     
     public func update<T>(to type: T.Type,
+                          tableSuffix: String = "",
                           values: [ColumnCondition],
                           wheres: ColumnCondition,
                           completeCallback: ((Bool) -> Void)? = nil) where T : Codable
@@ -375,7 +380,7 @@ open class LGDBManager {
         
         workQueue.async {
             assert(values.count > 0, "values for update is invalid")
-            let tableName = self.getTableName(from: type)
+            let tableName = self.getTableName(from: type, tableSuffix: tableSuffix)
             var sql = "UPDATE \(tableName) SET %@ %@;"
             
             var conditionArray = [String]()
