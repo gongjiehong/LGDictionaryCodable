@@ -23,6 +23,10 @@ open class LGDBManager {
     
     private var databaseQueue: FMDatabaseQueue
     
+    /// 初始化新建数据库
+    /// - Parameters:
+    ///   - dbName: 数据库名称
+    ///   - directory: 所在文件夹
     public init(dbName: String, directory: Directory = .documents) {
         var pathURL: URL
         switch directory {
@@ -43,6 +47,20 @@ open class LGDBManager {
             FileManager.default.createFile(atPath: pathURL.path, contents: nil, attributes: nil)
         }
         
+        if let queue = LGDBManager.queueDictionary[pathURL] {
+            self.databaseQueue = queue
+        } else if let queue = FMDatabaseQueue(url: pathURL) {
+            self.databaseQueue = queue
+            LGDBManager.queueDictionary[pathURL] = queue
+        } else {
+            fatalError("Can not create FMDatabaseQueue from URL \(pathURL).")
+        }
+    }
+    
+    /// 通过现有数据库路径初始化
+    /// - Parameter path: 现有数据库路径
+    public init(path: String) {
+        let pathURL: URL = URL(fileURLWithPath: path)
         if let queue = LGDBManager.queueDictionary[pathURL] {
             self.databaseQueue = queue
         } else if let queue = FMDatabaseQueue(url: pathURL) {
@@ -266,7 +284,7 @@ open class LGDBManager {
                 var condition = "WHERE "
                 var conditionSQLArray = [String]()
                 for condition in conditions {
-                    conditionSQLArray.append("\(condition.name) = ?")
+                    conditionSQLArray.append("\(condition.name) \(condition.operator) ?")
                     conditionValueArray.append(condition.value)
                 }
                 condition += conditionSQLArray.joined(separator: " AND ")
@@ -304,7 +322,7 @@ open class LGDBManager {
                 var condition = "WHERE "
                 var conditionSQLArray = [String]()
                 for condition in conditions {
-                    conditionSQLArray.append("\(condition.name) = ?")
+                    conditionSQLArray.append("\(condition.name) \(condition.operator) ?")
                     conditionValueArray.append(condition.value)
                 }
                 condition += conditionSQLArray.joined(separator: " AND ")
@@ -333,7 +351,70 @@ open class LGDBManager {
                 break
             }
             
+            self.execute(sql, to: type, conditionValueArray: conditionValueArray, completeCallback: completeCallback)
+        }
+    }
+    
+    public func update<T>(to type: T.Type,
+                          tableSuffix: String = "",
+                          values: [ColumnCondition],
+                          wheres: [ColumnCondition],
+                          completeCallback: ((Bool) -> Void)? = nil) where T : Codable
+    {
+        func callbackOnMainQueue(_ result: Bool) {
+            if let completeCallback = completeCallback {
+                DispatchQueue.main.async {
+                    completeCallback(result)
+                }
+            }
+        }
+        
+        workQueue.async {
+            assert(values.count > 0, "values for update is invalid")
+            let tableName = self.getTableName(from: type, tableSuffix: tableSuffix)
+            var sql = "UPDATE \(tableName) SET %@ %@;"
             
+            var conditionArray = [String]()
+            var conditionValuesArray = [Any]()
+            
+            for value in values {
+                conditionArray.append("\(value.name) = ?")
+                conditionValuesArray.append(value.value)
+                
+            }
+            let setValueSql = conditionArray.joined(separator: ",")
+            var condition = " WHERE "
+            if wheres.count > 0 {
+                
+                var conditionSQLArray = [String]()
+                for condition in wheres {
+                    conditionSQLArray.append("\(condition.name) = ?")
+                    conditionValuesArray.append(condition.value)
+                }
+                condition += conditionSQLArray.joined(separator: " AND ")
+            } else {
+            }
+            sql = String(format: sql, setValueSql, condition)
+            
+            self.databaseQueue.inDatabase({ (database) in
+                let result = database.executeUpdate(sql, withArgumentsIn: conditionValuesArray)
+                callbackOnMainQueue(result)
+            })
+        }
+    }
+    
+    public func execute<T>(_ sql: String,
+                           to type: T.Type,
+                           conditionValueArray: [Any] = [Any](),
+                           completeCallback: @escaping (([T]) -> Void)) where T : Codable
+    {
+        func callbackOnMainQueue(_ result: [T]) {
+            DispatchQueue.main.async {
+                completeCallback(result)
+            }
+        }
+        
+        workQueue.async {
             self.databaseQueue.inDatabase({ (database) in
                 if let result = database.executeQuery(sql, withArgumentsIn: conditionValueArray) {
                     var resultDictionaryArray = [[String: Any]]()
@@ -360,45 +441,6 @@ open class LGDBManager {
                 } else {
                     callbackOnMainQueue([])
                 }
-            })
-        }
-    }
-    
-    public func update<T>(to type: T.Type,
-                          tableSuffix: String = "",
-                          values: [ColumnCondition],
-                          wheres: ColumnCondition,
-                          completeCallback: ((Bool) -> Void)? = nil) where T : Codable
-    {
-        func callbackOnMainQueue(_ result: Bool) {
-            if let completeCallback = completeCallback {
-                DispatchQueue.main.async {
-                    completeCallback(result)
-                }
-            }
-        }
-        
-        workQueue.async {
-            assert(values.count > 0, "values for update is invalid")
-            let tableName = self.getTableName(from: type, tableSuffix: tableSuffix)
-            var sql = "UPDATE \(tableName) SET %@ %@;"
-            
-            var conditionArray = [String]()
-            var conditionValuesArray = [Any]()
-            
-            for value in values {
-                conditionArray.append("\(value.name) = ?")
-                conditionValuesArray.append(value.value)
-                
-            }
-            let setValueSql = conditionArray.joined(separator: ",")
-            
-            sql = String(format: sql, setValueSql, "WHERE \(wheres.name) = ?")
-            conditionValuesArray.append(wheres.value)
-            
-            self.databaseQueue.inDatabase({ (database) in
-                let result = database.executeUpdate(sql, withArgumentsIn: conditionValuesArray)
-                callbackOnMainQueue(result)
             })
         }
     }

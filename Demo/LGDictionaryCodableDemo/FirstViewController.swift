@@ -71,10 +71,14 @@ class FirstViewController: UIViewController {
         dbManager.update(to: LGDictionaryDecoderExampleModel.self,
                          values: [ColumnCondition(name: "user_id",
                                                   value: "7")],
-                         wheres: ColumnCondition(name: "user_id",
-                                                 value: "6"))
+                         wheres: [ColumnCondition(name: "user_id",
+                                                 value: "6")])
         { (succeed) in
                                                     
+        }
+        
+        dbManager.execute("select * from LGDictionaryCodableDemoLGDictionaryDecoderExampleModelTable", to: LGDictionaryDecoderExampleModel.self) { (data) in
+            print(data)
         }
         
         dbManager.select(from: LGDictionaryDecoderExampleModel.self,

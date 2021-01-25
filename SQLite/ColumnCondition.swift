@@ -12,9 +12,11 @@ import Foundation
 public struct ColumnCondition {
     public var name: String
     public var value: Any
+    public var `operator`: String
     
-    public init(name: String, value: Any) {
+    public init(name: String, value: Any, `operator`: String = "=") {
         self.name = name
         self.value = value
+        self.operator = `operator`
     }
 }
