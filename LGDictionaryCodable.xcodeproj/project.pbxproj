@@ -17,7 +17,6 @@
 		FE0599762272F265006F07F2 /* ColumnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE05996E2272EED7006F07F2 /* ColumnType.swift */; };
 		FE0599782272FC03006F07F2 /* ColumnProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0599772272FC03006F07F2 /* ColumnProperty.swift */; };
 		FE0599792272FC03006F07F2 /* ColumnProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0599772272FC03006F07F2 /* ColumnProperty.swift */; };
-		FE059997227300A3006F07F2 /* FMDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE05999122730065006F07F2 /* FMDB.framework */; };
 		FE059999227300BC006F07F2 /* LGDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE059998227300BC006F07F2 /* LGDBManager.swift */; };
 		FE05999A227300BC006F07F2 /* LGDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE059998227300BC006F07F2 /* LGDBManager.swift */; };
 		FE059A1C22730D9D006F07F2 /* LGWeakValueDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE059A1422730D9D006F07F2 /* LGWeakValueDictionary.swift */; };
@@ -40,61 +39,61 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FE05998822730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
-			remoteInfo = fmdb;
-		};
-		FE05998A22730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EE4290EF12B42F870088BD94;
-			remoteInfo = FMDB;
-		};
-		FE05998C22730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BF5D041618416BB2008C5AA9;
-			remoteInfo = Tests;
-		};
-		FE05998E22730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6290CBB5188FE836009790F8;
-			remoteInfo = "FMDB-IOS";
-		};
-		FE05999022730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83C73EFE1C326AB000FFC730;
-			remoteInfo = "FMDB iOS";
-		};
-		FE05999222730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
-			remoteInfo = "FMDB MacOS";
-		};
-		FE05999422730065006F07F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2CD2426D1FCC09CA00479FDE;
-			remoteInfo = "FMDB watchOS";
-		};
 		FEB32BA0227196DB0054D737 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB32B8C227196DB0054D737 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = FEB32B94227196DB0054D737;
 			remoteInfo = LGDictionaryCodable;
+		};
+		FED7A2E925BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
+			remoteInfo = fmdb;
+		};
+		FED7A2EB25BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE4290EF12B42F870088BD94;
+			remoteInfo = FMDB;
+		};
+		FED7A2ED25BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BF5D041618416BB2008C5AA9;
+			remoteInfo = Tests;
+		};
+		FED7A2EF25BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6290CBB5188FE836009790F8;
+			remoteInfo = "FMDB-IOS";
+		};
+		FED7A2F125BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73EFE1C326AB000FFC730;
+			remoteInfo = "FMDB iOS";
+		};
+		FED7A2F325BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
+			remoteInfo = "FMDB MacOS";
+		};
+		FED7A2F525BFB80000FD54E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2CD2426D1FCC09CA00479FDE;
+			remoteInfo = "FMDB watchOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -103,7 +102,6 @@
 		FE0599702272F080006F07F2 /* ColumnCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnCodable.swift; sourceTree = "<group>"; };
 		FE0599722272F25F006F07F2 /* ColumnTypeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnTypeDecoder.swift; sourceTree = "<group>"; };
 		FE0599772272FC03006F07F2 /* ColumnProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnProperty.swift; sourceTree = "<group>"; };
-		FE05997E22730065006F07F2 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = FMDB/fmdb.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE059998227300BC006F07F2 /* LGDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDBManager.swift; sourceTree = "<group>"; };
 		FE059A1422730D9D006F07F2 /* LGWeakValueDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LGWeakValueDictionary.swift; sourceTree = "<group>"; };
 		FE9401662276A91400F5D611 /* ColumnCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnCondition.swift; sourceTree = "<group>"; };
@@ -117,6 +115,7 @@
 		FEB32BB1227197E40054D737 /* LGDictionaryDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryDecoder.swift; sourceTree = "<group>"; };
 		FEB32BB32271AA940054D737 /* LGDictionaryDecoderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryDecoderTest.swift; sourceTree = "<group>"; };
 		FEB32BB52271AE690054D737 /* LGDictionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDictionaryEncoder.swift; sourceTree = "<group>"; };
+		FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = FMDB/fmdb.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEE3B41F22A7DD650067E816 /* LGDecodableDefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LGDecodableDefaultValue.swift; sourceTree = "<group>"; };
 		FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSortType.swift; sourceTree = "<group>"; };
 		FEF09D7D227EDCE700E480B5 /* Codable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Extension.swift"; sourceTree = "<group>"; };
@@ -127,7 +126,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE059997227300A3006F07F2 /* FMDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +143,7 @@
 		FE05996D2272EE22006F07F2 /* SQLite */ = {
 			isa = PBXGroup;
 			children = (
-				FE05997E22730065006F07F2 /* fmdb.xcodeproj */,
+				FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */,
 				FE05996E2272EED7006F07F2 /* ColumnType.swift */,
 				FEE59E6F22769FF30028FA6F /* ColumnSortType.swift */,
 				FE0599772272FC03006F07F2 /* ColumnProperty.swift */,
@@ -157,20 +155,6 @@
 				FE059A1422730D9D006F07F2 /* LGWeakValueDictionary.swift */,
 			);
 			path = SQLite;
-			sourceTree = "<group>";
-		};
-		FE05997F22730065006F07F2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FE05998922730065006F07F2 /* fmdb */,
-				FE05998B22730065006F07F2 /* libFMDB.a */,
-				FE05998D22730065006F07F2 /* Tests.xctest */,
-				FE05998F22730065006F07F2 /* libFMDB-IOS.a */,
-				FE05999122730065006F07F2 /* FMDB.framework */,
-				FE05999322730065006F07F2 /* FMDB.framework */,
-				FE05999522730065006F07F2 /* FMDB.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		FE059996227300A3006F07F2 /* Frameworks */ = {
@@ -221,6 +205,20 @@
 				FEB32BA5227196DB0054D737 /* Info.plist */,
 			);
 			path = LGDictionaryCodableTests;
+			sourceTree = "<group>";
+		};
+		FED7A2E025BFB80000FD54E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FED7A2EA25BFB80000FD54E1 /* fmdb */,
+				FED7A2EC25BFB80000FD54E1 /* libFMDB.a */,
+				FED7A2EE25BFB80000FD54E1 /* Tests.xctest */,
+				FED7A2F025BFB80000FD54E1 /* libFMDB-IOS.a */,
+				FED7A2F225BFB80000FD54E1 /* FMDB.framework */,
+				FED7A2F425BFB80000FD54E1 /* FMDB.framework */,
+				FED7A2F625BFB80000FD54E1 /* FMDB.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,8 +302,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FE05997F22730065006F07F2 /* Products */;
-					ProjectRef = FE05997E22730065006F07F2 /* fmdb.xcodeproj */;
+					ProductGroup = FED7A2E025BFB80000FD54E1 /* Products */;
+					ProjectRef = FED7A2DF25BFB80000FD54E1 /* fmdb.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -317,53 +315,53 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FE05998922730065006F07F2 /* fmdb */ = {
+		FED7A2EA25BFB80000FD54E1 /* fmdb */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = fmdb;
-			remoteRef = FE05998822730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2E925BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05998B22730065006F07F2 /* libFMDB.a */ = {
+		FED7A2EC25BFB80000FD54E1 /* libFMDB.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFMDB.a;
-			remoteRef = FE05998A22730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2EB25BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05998D22730065006F07F2 /* Tests.xctest */ = {
+		FED7A2EE25BFB80000FD54E1 /* Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = Tests.xctest;
-			remoteRef = FE05998C22730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2ED25BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05998F22730065006F07F2 /* libFMDB-IOS.a */ = {
+		FED7A2F025BFB80000FD54E1 /* libFMDB-IOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libFMDB-IOS.a";
-			remoteRef = FE05998E22730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2EF25BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05999122730065006F07F2 /* FMDB.framework */ = {
+		FED7A2F225BFB80000FD54E1 /* FMDB.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = FMDB.framework;
-			remoteRef = FE05999022730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2F125BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05999322730065006F07F2 /* FMDB.framework */ = {
+		FED7A2F425BFB80000FD54E1 /* FMDB.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = FMDB.framework;
-			remoteRef = FE05999222730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2F325BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE05999522730065006F07F2 /* FMDB.framework */ = {
+		FED7A2F625BFB80000FD54E1 /* FMDB.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = FMDB.framework;
-			remoteRef = FE05999422730065006F07F2 /* PBXContainerItemProxy */;
+			remoteRef = FED7A2F525BFB80000FD54E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
