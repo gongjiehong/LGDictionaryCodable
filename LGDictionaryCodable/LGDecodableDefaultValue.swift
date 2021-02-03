@@ -110,3 +110,9 @@ extension Data {
         return Data()
     }
 }
+
+extension Array {
+    public static var defaultValue: Array {
+        return []
+    }
+}

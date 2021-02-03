@@ -269,13 +269,11 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             switch decoder.options.nonContainsKeyDecodingStrategy {
             case .default:
                 return true
-                break
             case .throw:
                 let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
                 let context = DecodingError.Context(codingPath: self.decoder.codingPath,
                                                     debugDescription: debugDescription)
                 throw DecodingError.keyNotFound(key, context)
-                break
             }
         }
     }
