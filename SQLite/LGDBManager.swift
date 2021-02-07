@@ -71,7 +71,7 @@ open class LGDBManager {
         }
     }
     
-    private func getTableName(from type: Codable.Type, tableSuffix: String = "") -> String {
+    public func getTableName(from type: Codable.Type, tableSuffix: String = "") -> String {
         return String(reflecting: type).replacingOccurrences(of: ".", with: "") + tableSuffix + "Table"
     }
     
