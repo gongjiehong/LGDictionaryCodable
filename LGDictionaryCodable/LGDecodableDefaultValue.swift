@@ -11,6 +11,13 @@ import Foundation
 // MARK: - Decodable object contain a defualt value 
 extension Decodable {
     public static var defaultValue: Self? {
+        // 此处特殊处理Array类型，如果为Array可以成功转换，不是的话会返回nil，不影响其它类型处理，解析效率有一定影响
+        return [] as? Self
+    }
+}
+
+extension Encodable {
+    public static var defaultValue: Self? {
         return nil
     }
 }
@@ -108,11 +115,5 @@ extension Date {
 extension Data {
     public static var defaultValue: Data? {
         return Data()
-    }
-}
-
-extension Array {
-    public static var defaultValue: Array {
-        return []
     }
 }

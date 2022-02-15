@@ -267,7 +267,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
            return entry is NSNull
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 return true
             case .throw:
                 let debugDescription = "No value associated with key \(key) (\"\(key.stringValue)\")."
@@ -293,7 +293,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  Bool.defaultValue  {
                     return value
                 } else {
@@ -324,7 +324,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -354,7 +354,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -386,7 +386,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -416,7 +416,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -446,7 +446,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -476,7 +476,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -506,7 +506,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -536,7 +536,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -566,7 +566,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -596,7 +596,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -626,7 +626,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -656,7 +656,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -686,7 +686,7 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
+            case .`default`:
                 if let value =  type.defaultValue  {
                     return value
                 } else {
@@ -729,8 +729,8 @@ fileprivate struct _DictionaryKeyedDecodingContainer<K : CodingKey> : KeyedDecod
             return value
         } else {
             switch decoder.options.nonContainsKeyDecodingStrategy {
-            case .default:
-                if let value =  type.defaultValue  {
+            case .`default`:
+                if let value = type.defaultValue  {
                     return value
                 } else {
                     fallthrough
