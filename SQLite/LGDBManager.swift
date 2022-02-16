@@ -444,6 +444,10 @@ open class LGDBManager {
             })
         }
     }
+
+    deinit {
+        self.databaseQueue.close()
+    }
 }
 
 fileprivate extension FileManager {
